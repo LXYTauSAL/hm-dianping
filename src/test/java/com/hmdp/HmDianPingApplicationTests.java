@@ -24,6 +24,7 @@ class HmDianPingApplicationTests {
 
     @Test
     void testId() throws InterruptedException {
+        System.out.println(1);
         CountDownLatch latch = new CountDownLatch(300);
 
         Runnable task = () ->{
