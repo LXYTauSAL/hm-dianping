@@ -30,6 +30,7 @@ class HmDianPingApplicationTests {
         System.out.println("master test");
         System.out.println("hot-fix test");
         System.out.println("pull test");
+        System.out.println("gitee test");
         CountDownLatch latch = new CountDownLatch(300);
 
         Runnable task = () ->{
