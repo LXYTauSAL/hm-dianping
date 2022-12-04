@@ -42,6 +42,8 @@ import static com.hmdp.utils.SystemConstants.USER_NICK_NAME_PREFIX;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
     @Resource
+    private IUserService userService;
+    @Resource
     private StringRedisTemplate stringRedisTemplate;
     @Override
     public Result sendCode(String phone, HttpSession session) {
@@ -95,6 +97,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         //返回token
         //session.setAttribute("user",user);
         return Result.ok(token);
+    }
+
+    @Override
+    public Result queryUserById(Long userId) {
+        User user = userService.getById(userId);
+        if(user == null){
+            return Result.ok();
+        }
+        UserDTO userDTO = BeanUtil.copyProperties(user, UserDTO.class);
+        return Result.ok(userDTO);
     }
 
     private User createUserWithPhone(String phone) {
