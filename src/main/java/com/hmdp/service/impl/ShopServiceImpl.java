@@ -205,15 +205,18 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop> implements IS
         GeoResults<RedisGeoCommands.GeoLocation<String>> results = stringRedisTemplate.opsForGeo()
                 .search(
                         SHOP_GEO_KEY + typeId,
-                        GeoReference.fromCoordinate(x, y),
+                        GeoReference.fromCoordinate(x,y),
                         new Distance(5000),
-                        RedisGeoCommands.GeoRadiusCommandArgs.newGeoSearchArgs().includeDistance().limit(end)
+                        RedisGeoCommands.GeoSearchCommandArgs.newGeoSearchArgs().includeDistance().limit(end)
                 );
         //解析出id
         if(results == null){
             return Result.ok(Collections.emptyList());
         }
         List<GeoResult<RedisGeoCommands.GeoLocation<String>>> list = results.getContent();
+        if(list.size() <= from ){
+            return Result.ok(Collections.emptyList());
+        }
         //截取从from 到 end
         List<Long> ids = new ArrayList<>(list.size());
         Map<String,Distance> distanceMap = new HashMap<>(list.size());
